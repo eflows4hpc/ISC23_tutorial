@@ -23,9 +23,9 @@ workflows with Alien4Cloud.
  
 | Time | Session | Presenter |
 | --- | --- | --- | 
-| 9:00 – 9:15 | Overview of eFlows4HPC project and tutorial agenda | Rosa M Badia (BSC) |
-| 9:15 - 9:35 | Part 1.1: Integrating different computations in PyCOMPSs | Rosa M Badia (BSC) |
-| 9:35 – 10:05 | Part 1.2: HPC ready container images | Jorge Ejarque (BSC) |
+| 09:00 – 09:15 | Overview of eFlows4HPC project and tutorial agenda | Rosa M Badia (BSC) |
+| 09:15 - 09:35 | Part 1.1: Integrating different computations in PyCOMPSs | Rosa M Badia (BSC) |
+| 09:35 – 10:05 | Part 1.2: HPC ready container images | Jorge Ejarque (BSC) |
 | 10:05 - 10:35 | Part 1.3: Data Pipelines and Data Logistics Service (DLS) | Jedrzej Rybicki (JSC) |
 | 10:35 - 10:55 | Part 1.4: TOSCA Orchestration and HPCWaaS |  Jorge Ejarque (BSC) |
 | 10:55 – 11:00 | Conclusion of part 1 |  Rosa M Badia (BSC) |
