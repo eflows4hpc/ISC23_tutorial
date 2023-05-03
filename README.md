@@ -18,3 +18,17 @@ Pipelines) and overall topology (TOSCA). The second part will be more practical,
 how to generate specific containers that leverage the HPC systems features (hands-on
 component), how to move data from repositories to the HPC systems, and how to deploy the
 workflows with Alien4Cloud.
+
+## Agenda
+ 
+| 9:00 – 9:15 | Overview of eFlows4HPC project and tutorial agenda | Rosa M Badia (BSC) |
+| 9:15 - 9:35 | Part 1.1: Integrating different computations in PyCOMPSs | Rosa M Badia (BSC) |
+| 9:35 – 10:05 | Part 1.2: HPC ready container images | Jorge Ejarque (BSC) |
+| 10:05 - 10:35 | Part 1.3: Data Pipelines and Data Logistics Service (DLS) | Jedrzej Rybicki (JSC) |
+| 10:35 - 10:55 | Part 1.4: TOSCA Orchestration and HPCWaaS |  Jorge Ejarque (BSC) |
+| 10:55 – 11:00 | Conclusion of part 1 |  Rosa M Badia (BSC) |
+| 11:00 - 11:30 |  Coffee break | | 
+| 11:30 - 12:05 | Part 2.1: Hands-on session: How to build HPC Ready containers | Jorge Ejarque (BSC) |
+| 12:05 - 12:30 | Part 2.2: Hands-on session: How to move data with the DLS  | Jedrzej Rybicki (JSC)|
+| 12:30 - 12:45 | Part 2.3: Video demonstrating deployment with Allien4Cloud | |
+| 12:45 - 13:00 | Tutorial conclusions  | all presenters |
