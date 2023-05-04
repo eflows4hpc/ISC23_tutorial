@@ -31,6 +31,11 @@ export AIRFLOW__CORE__LOAD_EXAMPLES=False
 airflow db init 
 ```
 
+Add admin user to the airflow (this is optional, otherwise the admin user with random password will be added automatically)
+```
+airflow users  create --role Admin --username admin --email admin --firstname admin --lastname admin --password admin
+```
+
 To start airflow in standalone mode call:
 ```
 airflow standalone
