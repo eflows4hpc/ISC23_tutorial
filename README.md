@@ -1,5 +1,9 @@
 # ISC23_tutorial
 
+#Introduction to the eFlows4HPC software stack and HPC Workflows as a Service methodology
+
+## ISC-HPC tutorial, Hamburg May 21st, 2023 
+
 ## Abstract 
 The tutorial will give an overview of the eFlows4HPC software stack and of the HPC
 Workflows as a Service (HPCWaaS) methodology. The eFlows4HPC project
@@ -23,8 +27,8 @@ workflows with Alien4Cloud.
  
 | Time | Session | Presenter |
 | --- | --- | --- | 
-| 09:00 – 09:15 | [Overview of eFlows4HPC project and tutorial agenda](slides/eFlows4HPC_ISC_tutorial_intro.pptx) | Rosa M Badia (BSC) |
-| 09:15 - 09:35 | [Part 1.1: Integrating different computations in PyCOMPSs](slides/eFlows4HPC_ISC_tutorial_part1.1.pptx) | Rosa M Badia (BSC) |
+| 09:00 – 09:15 | [Overview of eFlows4HPC project and tutorial agenda](slides/eFlows4HPC_ISC_tutorial_intro.pdf) | Rosa M Badia (BSC) |
+| 09:15 - 09:35 | [Part 1.1: Integrating different computations in PyCOMPSs](slides/eFlows4HPC_ISC_tutorial_part1.1.pdf) | Rosa M Badia (BSC) |
 | 09:35 – 10:05 | Part 1.2: HPC ready container images | Jorge Ejarque (BSC) |
 | 10:05 - 10:35 | [Part 1.3: Data Pipelines and Data Logistics Service (DLS)](slides/eFlows4HPC_ISC_tutorial_part1.3.pdf) | Jedrzej Rybicki (JSC) |
 | 10:35 - 10:55 | Part 1.4: TOSCA Orchestration and HPCWaaS |  Jorge Ejarque (BSC) |
