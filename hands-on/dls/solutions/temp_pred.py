@@ -28,46 +28,52 @@ Request for particular location returns json:
 """
 
 
-
 import requests
-import pendulum
-from dateutil import parser
 
 from airflow.decorators import dag, task
+from airflow.utils.dates import days_ago
+
 
 @dag(
-    schedule="@hourly", catchup=False, start_date=pendulum.datetime(2023, 1, 3, tz="UTC"),
+    schedule=None, catchup=False, start_date=days_ago(1),
 )
 def weather_predictor():
-
     @task(multiple_outputs=True)
     def get_temperatures():
-        url = 'https://api.open-meteo.com/v1/forecast?latitude=53.55&longitude=9.99&hourly=temperature_2m'
+        url = "https://api.open-meteo.com/v1/forecast?latitude=53.55&longitude=9.99&hourly=temperature_2m"
         ret = requests.get(url)
         if not ret.ok:
             print("Error fetching data", ret.content)
             return -1
-        
-        return ret.json()['hourly']
-    
-    @task.virtualenv(task_id='make_prediction', requirements=['numpy', 'scikit-learn==1.2.2'], system_site_packages=False)
+
+        return ret.json()["hourly"]
+
+    @task.virtualenv(
+        task_id="make_prediction",
+        requirements=["numpy", "python-dateutil", "scikit-learn==1.2.2"],
+        system_site_packages=False,
+    )
     def make_prediction(values):
         # to be sure to import from venv
-        from sklearn.linear_model import LinearRegression
         import numpy as np
+        from dateutil import parser
+        from sklearn.linear_model import LinearRegression
 
         model = LinearRegression()
-        X_train = np.array((list(map(lambda x: parser.parse(x).timestamp(), values['time'])))).reshape(-1, 1)
-        y_train = np.array(values['temperature_2m'])
+        X_train = np.array(
+            (list(map(lambda x: parser.parse(x).timestamp(), values["time"])))
+        ).reshape(-1, 1)
+        y_train = np.array(values["temperature_2m"])
 
         model.fit(X_train, y_train)
 
-        next_hour = model.predict([X_train[-1]+3600])
-        print('-'*20)
+        next_hour = model.predict([X_train[-1] + 3600])
+        print("-" * 20)
         print(f"Temperature next hour will be: {next_hour[0]}")
-        print('-'*20)
+        print("-" * 20)
 
     vals = get_temperatures()
     make_prediction(vals)
+
 
 weather_predictor()

@@ -1,52 +1,68 @@
 """
-Example pipeline for retrieving data about water level in rivers
+Solution: Example pipeline for retrieving data about water level in rivers
 
 The source of the data is WSV site, e.g. url
+https://www.pegelonline.wsv.de/webservices/files/Wasserstand+Rohdaten
+
+(this allows you to select a river to download raw data from, choose a river and location), e.g.
+
  https://www.pegelonline.wsv.de/webservices/files/Wasserstand+Rohdaten/RHEIN/DÜSSELDORF
 
  The goal of this task is to get data (published every hour), apply some transformation (e.g. hourly mean value), 
  and upload it to a local database.
+
+ Suggestions:
+ -the down.csv has following format:
+ "04.04.2023";"Standort Köln";"RHEIN";"DÜSSELDORF";"2750010";"W_O";"cm";"524";"04.04.2023";"12:40";"PNP";"24,529"
+"00:15";"514"
+"00:30";"514"
+"00:45";"514"
+...
+you can skip the header line, and use ; as separator and parse the numbers (pandas can download directly from an url)
+-note that sometimes values are missing and replaced with XXX,XXX
+-the time should be split in two (hours:minutes), check pd.Series.str.split(delimeter, expand=True)
+-also the values should be converted to numeric (pd.to_numeric)
+-to get the current date in a airflow way you can use ds argument which is injected in each task 
+ 
 """
-
-import numpy as np
-import pandas as pd
-import pendulum
-
 from airflow.decorators import dag, task
 from airflow.providers.sqlite.hooks.sqlite import SqliteHook
+from airflow.utils.dates import days_ago
 
-
-
-url_template = "https://www.pegelonline.wsv.de/webservices/files/Wasserstand+Rohdaten/RHEIN/D%C3%9CSSELDORF/{day}.{month}.{year}/down.csv"
-
-
-def convert(x, year, month, day):
-    return tuple([year, month, day, x[0], x[1]])
-
-
-def split_time(col):
-    col[["hour", "min"]] = (
-        col["time"]
-        .str.split(pat=":", expand=True)
-        .rename({0: "hour", 1: "minute"}, axis=1)
-    )
-    col["value"] = col["value"].apply(pd.to_numeric)
-    return col
+url_template = "https://www.pegelonline.wsv.de/webservices/files/Wasserstand+Rohdaten/RHEIN/D%C3%9CSSELDORF/{day:02d}.{month:02d}.{year}/down.csv"
 
 
 @dag(
-    schedule="@daily", catchup=True, start_date=pendulum.datetime(2023, 1, 3, tz="UTC"),
+    schedule="@daily", catchup=False, start_date=days_ago(2),
 )
 def waterg():
     @task
     def get_url(ds=None):
         year, month, day = ds.split("-")
-        url = url_template.format(day=day, month=month, year=year)
+        url = url_template.format(day=int(day), month=int(month), year=year)
         print("Url is:", url)
         return url
 
-    @task(multiple_outputs=True)
+    @task.virtualenv(
+        requirements=["pandas==1.5.3"],
+        system_site_packages=False,
+        multiple_outputs=True,
+    )
     def convet_measurements(url):
+        import pandas as pd
+
+        # virtualenv has also some drawbacks
+        def convert(x, year, month, day):
+            return tuple([year, month, day, x[0], x[1]])
+
+        def split_time(col):
+            col[["hour", "min"]] = (
+                col["time"]
+                .str.split(pat=":", expand=True)
+                .rename({0: "hour", 1: "minute"}, axis=1)
+            )
+            col["value"] = col["value"].apply(pd.to_numeric)
+            return col
 
         print(f"Getting the data from: {url}")
         df = (
@@ -57,7 +73,7 @@ def waterg():
             .dropna()
             .pipe(split_time)
             .groupby("hour")
-            .agg({"value": np.mean})
+            .agg({"value": "mean"})
         )
 
         print(f"Retrieved {len(df)} measurements")
@@ -92,4 +108,4 @@ def waterg():
     store_in_db(values=vals)
 
 
-waterg()
+dag = waterg()
