@@ -1,12 +1,29 @@
 """
-Example pipeline for predicting air temperature
+Solution: Example pipeline for predicting air temperature
 
 The source of the data is Open Meteo site
 https://open-meteo.com/en/docs#api_form
 
 (please be gentle with the API)
 
- The goal of this task is to get the data and make a prediction of the air temperature for the next hour
+Request for particular location returns json:
+
+{
+    "latitude":53.54,"longitude":10.0,
+    .....
+    "hourly":{
+        "time":["2023-05-04T00:00","2023-05-04T01:00",....],
+        "temperature_2m":[4.9,4.5,4.0,....]
+        }
+}
+
+
+ The goal of this task is to get the data and make a prediction of the air temperature for the next hour.
+
+ Suggestions:
+ -first task connects to service and get the data
+ -second task uses simple model (e.g. scikit-learn LinearRegresion to make prediction)
+ -you will need to convert the time into timestamp, e.g. dateutil.parser.parse(x).timestamp()
 
 """
 
@@ -14,6 +31,7 @@ https://open-meteo.com/en/docs#api_form
 
 import requests
 import pendulum
+from dateutil import parser
 
 from airflow.decorators import dag, task
 
@@ -32,16 +50,14 @@ def weather_predictor():
         
         return ret.json()['hourly']
     
-    @task.virtualenv(task_id='make_prediction', requirements=['pandas==1.5.3', 'scikit-learn==1.2.2'], system_site_packages=False)
+    @task.virtualenv(task_id='make_prediction', requirements=['numpy', 'scikit-learn==1.2.2'], system_site_packages=False)
     def make_prediction(values):
         # to be sure to import from venv
         from sklearn.linear_model import LinearRegression
-        import pandas as pd
         import numpy as np
 
         model = LinearRegression()
-
-        X_train = (pd.to_datetime(values['time']).astype('int64')// 10 ** 9).to_numpy().reshape(-1, 1)
+        X_train = np.array((list(map(lambda x: parser.parse(x).timestamp(), values['time'])))).reshape(-1, 1)
         y_train = np.array(values['temperature_2m'])
 
         model.fit(X_train, y_train)
