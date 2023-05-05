@@ -2,6 +2,8 @@
 
 This part will cover the introduction to Airflow and creation of data pipelines
 
+## Prerequists
+Python and python venv modlue should be installed on your machine. See platform specific details: https://www.python.org/downloads/. 
 
 ## Setup
 Check-out the repository
