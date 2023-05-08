@@ -2,8 +2,8 @@
 
 This part will cover the introduction to Airflow and creation of data pipelines
 
-## Prerequists
-Python and python venv modlue should be installed on your machine. See platform specific details: https://www.python.org/downloads/. 
+## Prerequisites
+Python and python venv module should be installed on your machine. See platform specific details: https://www.python.org/downloads/. 
 
 ## Setup
 Check-out the repository
@@ -45,4 +45,13 @@ airflow standalone
 
 and go to http://localhost:8080
 
+
+## Projects
+There are three projects you can select from. The scaffoldings for the project are provided and marked with the tag *project*. In the code there are suggestions and some places marked to be fixed. Projects
+
+1. hello_world (the easiest project, accepts parameter and print greetings out)
+2. temp_pred (predict air temperature for given location)
+3. waterlevel (retrieve water level value, store in local database)
+
+There are also solutions for the projects in the *solution* folder. You can peek inside if you stuck.
 

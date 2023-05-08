@@ -10,7 +10,7 @@ import pendulum
         params={
             'name': Param('John', type='string'),
             'age': Param(16, type='integer', minimum=16)
-        }
+        },
 )
 def db_dag():
 

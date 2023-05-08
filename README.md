@@ -33,6 +33,6 @@ workflows with Alien4Cloud.
 | 10:55 – 11:00 | Conclusion of part 1 |  Rosa M Badia (BSC) |
 | 11:00 - 11:30 |  Coffee break | | 
 | 11:30 - 12:05 | Part 2.1: Hands-on session: How to build HPC Ready containers | Jorge Ejarque (BSC) |
-| 12:05 - 12:30 | Part 2.2: Hands-on session: How to move data with the DLS  | Jedrzej Rybicki (JSC)|
+| 12:05 - 12:30 | [Part 2.2: Hands-on session: How to move data with the DLS](hands-on/dls)  | Jedrzej Rybicki (JSC)|
 | 12:30 - 12:45 | Part 2.3: Video demonstrating deployment with Allien4Cloud | |
 | 12:45 - 13:00 | Tutorial conclusions  | all presenters |

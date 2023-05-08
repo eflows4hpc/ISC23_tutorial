@@ -1,5 +1,5 @@
 """
-Solution: Example pipeline for retrieving data about water level in rivers
+Project: Example pipeline for retrieving data about water level in rivers
 
 The source of the data is WSV site, e.g. url
 https://www.pegelonline.wsv.de/webservices/files/Wasserstand+Rohdaten
@@ -24,18 +24,19 @@ you can skip the header line, and use ; as separator and parse the numbers (pand
 -also the values should be converted to numeric (pd.to_numeric)
 -to get the current date in a airflow way you can use ds argument which is injected in each task 
 -check other dags to see how to connect to database (use sqlite default connection)
--use virtualenv  
+-use virtualenv 
  
 """
 from airflow.decorators import dag, task
 from airflow.providers.sqlite.hooks.sqlite import SqliteHook
 from airflow.utils.dates import days_ago
 
-url_template = "https://www.pegelonline.wsv.de/webservices/files/Wasserstand+Rohdaten/RHEIN/D%C3%9CSSELDORF/{day:02d}.{month:02d}.{year}/down.csv"
+# fix the url template
+url_template = "{day:02d}.{month:02d}.{year}/down.csv"
 
 
 @dag(
-    schedule="@daily", catchup=False, start_date=days_ago(2),
+    schedule="@daily", catchup=False, start_date=days_ago(2), tags=['project']
 )
 def waterg():
     @task
@@ -53,31 +54,13 @@ def waterg():
     def convet_measurements(url):
         import pandas as pd
 
-        # virtualenv has also some drawbacks
-        def convert(x, year, month, day):
-            return tuple([year, month, day, x[0], x[1]])
-
-        def split_time(col):
-            col[["hour", "min"]] = (
-                col["time"]
-                .str.split(pat=":", expand=True)
-                .rename({0: "hour", 1: "minute"}, axis=1)
-            )
-            col["value"] = col["value"].apply(pd.to_numeric)
-            return col
-
         print(f"Getting the data from: {url}")
-        df = (
-            pd.read_csv(
+        df = pd.read_csv(
                 url, skiprows=1, names=["time", "value"], sep=";", encoding="utf-8"
             )
-            .replace("XXX,XXX", pd.NA)
-            .dropna()
-            .pipe(split_time)
-            .groupby("hour")
-            .agg({"value": "mean"})
-        )
 
+        # fix the data here:
+        #....
         print(f"Retrieved {len(df)} measurements")
 
         return df.value.to_dict()
@@ -98,12 +81,8 @@ def waterg():
         );
         """
         )
-        rows = [(year, month, day, hour, val) for hour, val in values]
-        hook.insert_rows(
-            "Measurements",
-            rows=rows,
-            target_fields=["year", "month", "day", "hour", "value"],
-        )
+        # insert rows in the db here
+        
 
     url = get_url()
     vals = convet_measurements(url=url)
