@@ -3,7 +3,7 @@
 This part will cover the introduction to Airflow and creation of data pipelines
 
 ## Prerequisites
-Python and python venv module should be installed on your machine. See platform specific details: https://www.python.org/downloads/. 
+Python and python venv module should be installed on your machine. See platform specific details: https://www.python.org/downloads/. For Windows you will require [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) installed, you can also use Docker if available on your system. 
 
 ## Setup
 Check-out the repository
