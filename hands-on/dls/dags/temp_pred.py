@@ -51,7 +51,7 @@ def weather_predictor():
 
     @task.virtualenv(
         task_id="make_prediction",
-        requirements=["numpy", "python-dateutil", "scikit-learn==1.2.2"],
+        requirements=["numpy", "python-dateutil", "scikit-learn"],
         system_site_packages=False,
     )
     def make_prediction(values):

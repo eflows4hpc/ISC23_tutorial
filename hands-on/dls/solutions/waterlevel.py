@@ -35,7 +35,7 @@ url_template = "https://www.pegelonline.wsv.de/webservices/files/Wasserstand+Roh
 
 
 @dag(
-    schedule="@daily", catchup=False, start_date=days_ago(2),
+    schedule="@daily", catchup=False, start_date=days_ago(2),tags=['project']
 )
 def waterg():
     @task

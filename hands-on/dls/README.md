@@ -55,3 +55,29 @@ There are three projects you can select from. The scaffoldings for the project a
 
 There are also solutions for the projects in the *solution* folder. You can peek inside if you stuck.
 
+## Docker setup
+
+Check-out the repository
+```
+git clone https://github.com/eflows4hpc/ISC23_tutorial.git
+```
+(you can also download it from https://github.com/eflows4hpc/ISC23_tutorial/archive/refs/heads/main.zip)
+
+Get apache airflow image
+
+```
+docker pull apache/airflow:latest
+```
+
+Start in standalone mode
+
+```
+cd ISC23_tutorial/hands-on/dls
+docker run -p 8080:8080 -v `pwd`/dags:/opt/airflow/dags apache/airflow:latest standalone
+```
+
+wait a little bit get the admin password and go to localhost:8080
+
+
+
+
