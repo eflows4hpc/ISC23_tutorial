@@ -11,6 +11,7 @@ Check-out the repository
 git clone https://github.com/eflows4hpc/ISC23_tutorial.git
 ```
 (you can also download it from https://github.com/eflows4hpc/ISC23_tutorial/archive/refs/heads/main.zip)
+(there is also a smaller repo: git clone https://github.com/eflows4hpc/ISC23-justdags.git) 
 
 
 Navigate to the hands-on directory, create and activate a Python virtual environment:
